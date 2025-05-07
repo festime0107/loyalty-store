@@ -12,12 +12,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const customer = await prisma.customer.findUnique({ where: { cardNumber } })
   if (!customer) return res.status(404).json({ error: "Klient jo i gjetur" })
 
-  const purchase = await prisma.purchase.create({
-    data: { customerId: customer.id, product },
-  })
-
+  await prisma.purchase.create({ data: { customerId: customer.id, product } })
   const total = await prisma.purchase.count({ where: { customerId: customer.id } })
   const discount = total % 5 === 0 ? 0.5 : 0
 
-  return res.status(201).json({ purchase, discount })
+  return res.status(201).json({ total, discount })
 }
