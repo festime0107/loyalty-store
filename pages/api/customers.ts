@@ -12,12 +12,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         data: { name, birthdate: new Date(birthdate), email, cardNumber },
       })
       return res.status(201).json(customer)
-    }catch (err: any) {
-        if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
-          return res.status(409).json({ error: "Ky Card Number ose Email ekziston më parë." })
-        }
-        return res.status(500).json({ error: "Gabim serveri." })
+    }catch (err: unknown) {
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === "P2002"
+      ) {
+        return res.status(409).json({ error: "Ky Card Number ose Email ekziston më parë." });
       }
+      return res.status(500).json({ error: "Gabim serveri." });
+    }
+    
   }
 
   if (req.method === "GET") {

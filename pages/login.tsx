@@ -17,7 +17,7 @@ export default function LoginPage() {
       password
     });
     if (res?.ok) {
-      router.push("/");
+        router.push("/register");
     } else {
       alert("Email ose fjalëkalim i pasaktë");
     }

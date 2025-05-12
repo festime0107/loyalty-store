@@ -16,6 +16,17 @@ async function main() {
       name: "Super Admin",
     },
   });
+  await prisma.user.upsert({
+    where: { email: "admin1@example.com" },
+    update: {},
+    create: {
+      email: "admin1@example.com",
+      password: await bcrypt.hash("adminpass", 10),
+      role: "ADMIN",
+      name: "Admin 1"
+    }
+  });
+  
 
   console.log("✅ Superadmin u shtua!");
   await prisma.$disconnect();
