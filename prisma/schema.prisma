@@ -1,10 +1,10 @@
-datasource db {
-  provider = "sqlite"            // ose "postgresql", varësisht ç’të dhëna po përdor
-  url      = env("DATABASE_URL")
-}
-
 generator client {
   provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model Customer {
@@ -20,6 +20,14 @@ model Purchase {
   id         String   @id @default(uuid())
   date       DateTime @default(now())
   product    String
-  customer   Customer @relation(fields: [customerId], references: [id])
   customerId String
+  customer   Customer @relation(fields: [customerId], references: [id])
+}
+
+model User {
+  id       String  @id @default(uuid())
+  email    String  @unique
+  password String
+  role     String  @default("ADMIN")
+  name     String?
 }
